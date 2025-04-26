@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barra lateral -->
+        <div class="sidebar">
+            <div class="sidebar-item search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Pesquisar" class="search-input">
+            </div>
+            <div class="sidebar-item active" data-category="minhas-notas">
+                <i class="fas fa-sticky-note"></i>
+                <span>Minhas notas</span>
+            </div>
+            <div class="sidebar-item" data-category="favoritos">
+                <i class="fas fa-star"></i>
+                <span>Favoritos</span>
+            </div>
+            <div class="sidebar-item" data-category="tarefas">
+                <i class="fas fa-tasks"></i>
+                <span>Tarefas</span>
+            </div>
+            <div class="sidebar-item" data-category="ideias">
+                <i class="fas fa-lightbulb"></i>
+                <span>Idéias</span>
+            </div>
+            <div class="sidebar-item" data-category="anotacoes-rapidas">
+                <i class="fas fa-comment"></i>
+                <span>Anotações rápidas</span>
+            </div>
+            <div class="sidebar-item" data-category="arquivadas">
+                <i class="fas fa-archive"></i>
+                <span>Arquivadas</span>
+            </div>
+            <div class="sidebar-item" data-category="lixeira">
+                <i class="fas fa-trash-alt"></i>
+                <span>Lixeira</span>
+            </div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-title">Categorias</div>
+            <div id="custom-categories">
+                <!-- Categorias personalizadas serão inseridas aqui via JavaScript -->
+            </div>
+            <div class="sidebar-item" id="create-category-btn">
+                <i class="fas fa-plus"></i>
+                <span>Criar categoria</span>
+            </div>
+            
+            <!-- Botão para alternar tema -->
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-item" id="theme-toggle">
+                <i class="fas fa-moon"></i>
+                <span>Modo escuro</span>
+            </div>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <div class="main-content">
+            <!-- Barra de pesquisa e criação de notas -->
+            <div class="top-bar">
+                <div class="note-input-container">
+                    <input type="text" placeholder="O que você quer anotar?" class="note-input">
+                    <div class="input-actions">
+                        <button class="mic-button"><i class="fas fa-microphone"></i></button>
+                        <button class="chat-button"><i class="fas fa-comment"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Título da categoria atual -->
+            <div class="category-header">
+                <h2 id="current-category-title">Minhas notas</h2>
+                <div class="view-options">
+                    <button class="view-option active" data-view="grid"><i class="fas fa-th"></i></button>
+                    <button class="view-option" data-view="list"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+
+            <!-- Grid de notas -->
+            <div class="notes-grid">
+                <!-- As notas serão inseridas aqui via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para criar/editar notas -->
+    <div class="modal" id="note-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Editar nota</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="edit-note-title" placeholder="Título da nota" class="modal-input">
+                
+                <!-- Editor de texto rico -->
+                <div class="rich-editor-container">
+                    <div class="rich-editor-toolbar">
+                        <button type="button" data-command="bold" title="Negrito"><i class="fas fa-bold"></i></button>
+                        <button type="button" data-command="italic" title="Itálico"><i class="fas fa-italic"></i></button>
+                        <button type="button" data-command="underline" title="Sublinhado"><i class="fas fa-underline"></i></button>
+                        <button type="button" data-command="strikeThrough" title="Tachado"><i class="fas fa-strikethrough"></i></button>
+                        <span class="toolbar-divider"></span>
+                        <button type="button" data-command="foreColor" title="Cor do texto" class="color-btn">
+                            <i class="fas fa-font"></i>
+                            <input type="color" class="color-picker-input">
+                        </button>
+                        <button type="button" data-command="hiliteColor" title="Cor de fundo" class="color-btn">
+                            <i class="fas fa-fill-drip"></i>
+                            <input type="color" class="color-picker-input">
+                        </button>
+                        <span class="toolbar-divider"></span>
+                        <button type="button" data-command="insertOrderedList" title="Lista numerada"><i class="fas fa-list-ol"></i></button>
+                        <button type="button" data-command="insertUnorderedList" title="Lista com marcadores"><i class="fas fa-list-ul"></i></button>
+                        <span class="toolbar-divider"></span>
+                        <button type="button" data-command="justifyLeft" title="Alinhar à esquerda"><i class="fas fa-align-left"></i></button>
+                        <button type="button" data-command="justifyCenter" title="Centralizar"><i class="fas fa-align-center"></i></button>
+                        <button type="button" data-command="justifyRight" title="Alinhar à direita"><i class="fas fa-align-right"></i></button>
+                    </div>
+                    <div id="rich-editor" class="rich-editor-content" contenteditable="true"></div>
+                    <textarea id="edit-note-content" style="display: none;"></textarea>
+                </div>
+                
+                <div class="modal-section">
+                    <h4>Categorias</h4>
+                    <div class="categories-container">
+                        <div id="note-categories-list">
+                            <!-- Categorias selecionadas serão inseridas aqui via JavaScript -->
+                        </div>
+                        <div class="categories-dropdown-container">
+                            <select id="categories-dropdown" class="categories-dropdown">
+                                <option value="">Selecionar categoria...</option>
+                                <!-- Opções de categorias serão inseridas aqui via JavaScript -->
+                            </select>
+                            <button id="add-category-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h4>Tags</h4>
+                    <div class="tags-container">
+                        <div id="note-tags-list">
+                            <!-- Tags serão inseridas aqui via JavaScript -->
+                        </div>
+                        <div class="tag-input-container">
+                            <input type="text" id="new-tag-input" placeholder="Nova tag" class="tag-input">
+                            <button id="add-tag-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-section">
+                    <h4>Opções</h4>
+                    <div class="note-options">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="note-is-task">
+                            <span class="checkmark"></span>
+                            Tarefa (to-do list)
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="note-is-favorite">
+                            <span class="checkmark"></span>
+                            Favorito
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="note-is-quick">
+                            <span class="checkmark"></span>
+                            Anotação rápida (expira em 5 dias)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="modal-section" id="task-items-section" style="display: none;">
+                    <h4>Itens da tarefa</h4>
+                    <div id="task-items-container">
+                        <!-- Itens de tarefa serão inseridos aqui via JavaScript -->
+                    </div>
+                    <div class="task-input-container">
+                        <input type="text" id="new-task-input" placeholder="Novo item" class="task-input">
+                        <button id="add-task-btn"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-note-btn" class="btn btn-secondary">Cancelar</button>
+                <button id="save-note-btn" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para criar categoria -->
+    <div class="modal" id="category-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nova categoria</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="category-name" placeholder="Nome da categoria" class="modal-input">
+                <div class="color-picker">
+                    <h4>Cor da categoria</h4>
+                    <div class="color-options">
+                        <div class="color-option" data-color="blue" style="background-color: #1a73e8;"></div>
+                        <div class="color-option" data-color="green" style="background-color: #0f9d58;"></div>
+                        <div class="color-option" data-color="yellow" style="background-color: #f4b400;"></div>
+                        <div class="color-option" data-color="red" style="background-color: #db4437;"></div>
+                        <div class="color-option" data-color="purple" style="background-color: #9334e6;"></div>
+                        <div class="color-option" data-color="pink" style="background-color: #e91e63;"></div>
+                        <div class="color-option" data-color="teal" style="background-color: #009688;"></div>
+                        <div class="color-option" data-color="orange" style="background-color: #ff5722;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-category-btn" class="btn btn-secondary">Cancelar</button>
+                <button id="save-category-btn" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação para esvaziar lixeira -->
+    <div class="modal" id="empty-trash-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Esvaziar lixeira</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja esvaziar a lixeira? Esta ação excluirá permanentemente todas as notas na lixeira.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-empty-trash-btn" class="btn btn-secondary">Cancelar</button>
+                <button id="confirm-empty-trash-btn" class="btn btn-danger">Esvaziar lixeira</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmação para restaurar nota -->
+    <div class="modal" id="restore-note-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Restaurar nota</h3>
+                <button class="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja restaurar esta nota?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-restore-note-btn" class="btn btn-secondary">Cancelar</button>
+                <button id="confirm-restore-note-btn" class="btn btn-primary">Restaurar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay para modais -->
+    <div class="modal-overlay"></div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
